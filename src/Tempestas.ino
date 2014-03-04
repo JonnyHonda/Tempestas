@@ -83,14 +83,14 @@ void pipe2Pi(int ptrData[], float dht_temp, float humidity, long pressure, float
   Serial.print (",");
   Serial.print ((float) humidity);
   Serial.print (",");
-  Serial.print ((long) pressure/100);
+  Serial.print ((double) pressure/100);
   Serial.print (",");
   Serial.print ((float) altitude);
   Serial.print (",");
   Serial.print ((short) bmp085temperature);
   Serial.println("\n");
   Serial.flush();
-  delay(1000);
+  delay(2000);
 }
 
 int getTemperatureAsInt(DeviceAddress deviceAddress){
