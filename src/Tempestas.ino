@@ -102,7 +102,7 @@ void pipe2Pi(int ptrData[], float dht_temp, float humidity, long pressure, float
   Serial.print (",");
   Serial.print ((short) bmp085temperature);
   Serial.print (",");
-  Serial.print ((float) altitude);
+  Serial.print ((float) mslp);
   Serial.println("\n");
   Serial.flush();
   delay(2000);
