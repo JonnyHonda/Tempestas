@@ -1,3 +1,6 @@
+/*
+  BMP085 main function ality
+*/
 #define BMP085_ADDRESS 0x77  // I2C address of BMP085
 int bmp085ReadInt(unsigned char address);
 short bmp085GetTemperature(unsigned int ut);

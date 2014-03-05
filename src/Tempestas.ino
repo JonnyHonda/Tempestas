@@ -18,6 +18,7 @@ void pipe2Pi(int ptrData[], float dht_temp, float humidity, long pressure, float
 //void pipe2Pi(int [], float, float);
 float readDHT_Humidity(void);
 float readDHT_Temperature(void);
+float quickMSLP(float, float, float);
 
 
 OneWire oneWire(ONE_WIRE_BUS);
@@ -69,25 +70,39 @@ void loop() {
   pipe2Pi(dsData, dht_temperature, humidity, pressure,altitude,temperature);
 }
 
+float quickMSLP(float t, float h, float p){
+  float dTop = 0.0065 * h;
+  float dBottom = t + dTop + 273.15;
+  float mslp = 0.0;
+  float temp = pow (1 - (dTop / dBottom), -5.257);
+  mslp =p * temp;
+return mslp;
+}
 
 void pipe2Pi(int ptrData[], float dht_temp, float humidity, long pressure, float altitude, short bmp085temperature){
   String output;
+  double total;
   // Squirt all the data to the Pi
   Serial.print( (float) (ptrData[0] * 0.0078125) );
+  total = (double) (ptrData[0] * 0.0078125);
   for (int x = 1; x < deviceCount; x++){
     Serial.print (",");
     Serial.print ( (float) (ptrData[x] * 0.0078125) );
   }
+
+  float mslp = quickMSLP(dht_temp, 62.00, pressure);
   Serial.print (",");
   Serial.print ((float) dht_temp);
   Serial.print (",");
   Serial.print ((float) humidity);
   Serial.print (",");
-  Serial.print ((double) pressure/100);
+  Serial.print ((float) pressure / 100);
   Serial.print (",");
   Serial.print ((float) altitude);
   Serial.print (",");
   Serial.print ((short) bmp085temperature);
+  Serial.print (",");
+  Serial.print ((float) altitude);
   Serial.println("\n");
   Serial.flush();
   delay(2000);
