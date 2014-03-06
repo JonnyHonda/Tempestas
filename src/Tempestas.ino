@@ -6,29 +6,22 @@
 #include <DHT.h>
 
 #include "bmp085_functions.h"
+#include "dht11_functions.h"
+#include "custom_functions.h"
+#include "ds18b20_functions.h"
 
-#define ONE_WIRE_BUS 10
+
 #define DHT_PIN 2
 
 #define TEMPERATURE_PRECISION 12
 #define MAX_DEVICES 5
 
-int getTemperatureAsInt(DeviceAddress deviceAddress);
-void pipe2Pi(int ptrData[], float dht_temp, float humidity, long pressure, float altitude, short bmp085temperature);
-//void pipe2Pi(int [], float, float);
-float readDHT_Humidity(void);
-float readDHT_Temperature(void);
-float quickMSLP(float, float, float);
 
-
-OneWire oneWire(ONE_WIRE_BUS);
-DHT dht;
+//OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature.
-DallasTemperature sensors(&oneWire);
 
 // An array of potentially 5 devices
 DeviceAddress device[MAX_DEVICES];
-int deviceCount; 
 
 void setup() {
   // put your setup code here, to run once:
@@ -47,7 +40,6 @@ void setup() {
     sensors.getAddress(device[x],x);
     sensors.setResolution(device[x], TEMPERATURE_PRECISION);
   }  
-
 }
 
 void loop() {
@@ -68,57 +60,4 @@ void loop() {
   float dht_temperature = readDHT_Temperature();
   // Now push everything to output
   pipe2Pi(dsData, dht_temperature, humidity, pressure,altitude,temperature);
-}
-
-float quickMSLP(float t, float h, float p){
-  float dTop = 0.0065 * h;
-  float dBottom = t + dTop + 273.15;
-  float mslp = 0.0;
-  float temp = pow (1 - (dTop / dBottom), -5.257);
-  mslp =p * temp;
-return mslp;
-}
-
-void pipe2Pi(int ptrData[], float dht_temp, float humidity, long pressure, float altitude, short bmp085temperature){
-  String output;
-  double total;
-  // Squirt all the data to the Pi
-  Serial.print( (float) (ptrData[0] * 0.0078125) );
-  total = (double) (ptrData[0] * 0.0078125);
-  for (int x = 1; x < deviceCount; x++){
-    Serial.print (",");
-    Serial.print ( (float) (ptrData[x] * 0.0078125) );
-  }
-
-  float mslp = quickMSLP(dht_temp, 62.00, pressure);
-  Serial.print (",");
-  Serial.print ((float) dht_temp);
-  Serial.print (",");
-  Serial.print ((float) humidity);
-  Serial.print (",");
-  Serial.print ((float) pressure / 100);
-  Serial.print (",");
-  Serial.print ((float) altitude);
-  Serial.print (",");
-  Serial.print ((short) bmp085temperature);
-  Serial.print (",");
-  Serial.print ((float) mslp);
-  Serial.println("\n");
-  Serial.flush();
-  delay(2000);
-}
-
-int getTemperatureAsInt(DeviceAddress deviceAddress){
-  int tempAsInt = sensors.getTemp(deviceAddress);
-  return tempAsInt;
-}
-
-float readDHT_Humidity(void){
-  delay(dht.getMinimumSamplingPeriod());
-  return dht.getHumidity();
-}
-
-float readDHT_Temperature(void){
-  delay(dht.getMinimumSamplingPeriod());
-  return dht.getTemperature();
 }
