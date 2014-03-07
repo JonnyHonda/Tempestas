@@ -28,11 +28,11 @@ void setup() {
   // initialize inputs/outputs
   // start serial port
   Serial.begin(9600);
+
+  // Start up the libraries
   Wire.begin();
   bmp085Calibration();
 
-
-  // Start up the libraries
   dht.setup(DHT_PIN); // data pin 2
   sensors.begin();
   deviceCount = sensors.getDeviceCount();
@@ -43,21 +43,25 @@ void setup() {
 }
 
 void loop() {
+  // fetch the temperature, pressure and altitude from the BMP085
   temperature = bmp085GetTemperature(bmp085ReadUT());
   pressure = bmp085GetPressure(bmp085ReadUP());
-  //altitude = (float)44330 * (1 - pow(((float) pressure/p0), 0.190295));
   altitude = bmp085GetAltitude(temperature, pressure);
+  
+  // create an array to hold the ds18b20 temperatures
   int dsData[deviceCount];
   int t;
-  //Serial.println("Incomming...");
   sensors.requestTemperatures();
   
   for(int x = 0; x < deviceCount; x++){
    t = getTemperatureAsInt(device[x]);
    dsData[x] = t;
   }
+
+  // fetch the DHT11 humidity and temperature
   float humidity = readDHT_Humidity();
   float dht_temperature = readDHT_Temperature();
+  
   // Now push everything to output
   pipe2Pi(dsData, dht_temperature, humidity, pressure,altitude,temperature);
 }
