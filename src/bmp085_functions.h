@@ -191,7 +191,7 @@ unsigned long bmp085ReadUP()
 
 float bmp085GetAltitude(float temp, float P){
   float altitude = 0.0;
-   //     const float p0 = 1013.25;
+   //     const float p0 = 1013.25; // this needs to be the current pressure at station to work
   //      float P = 1011.00;
    //     float temp = 11.00;
         float a = pow(p0/P,0.19022256) - 1;
