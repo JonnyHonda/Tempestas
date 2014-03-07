@@ -9,7 +9,7 @@ char bmp085Read(unsigned char address);
 int bmp085ReadInt(unsigned char address);
 unsigned int bmp085ReadUT();
 unsigned long bmp085ReadUP();
-
+float bmp085GetAltitude(float, float);
 const unsigned char OSS = 0;  // Oversampling Setting
 // Calibration values
 int ac1;
@@ -187,4 +187,15 @@ unsigned long bmp085ReadUP()
   up = (((unsigned long) msb << 16) | ((unsigned long) lsb << 8) | (unsigned long) xlsb) >> (8-OSS);
   
   return up;
+}
+
+float bmp085GetAltitude(float temp, float P){
+  float altitude = 0.0;
+   //     const float p0 = 1013.25;
+  //      float P = 1011.00;
+   //     float temp = 11.00;
+        float a = pow(p0/P,0.19022256) - 1;
+        float t = temp + 273.15;
+        return altitude = (a * t) / 0.0065;
+
 }

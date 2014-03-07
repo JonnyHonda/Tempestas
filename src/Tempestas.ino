@@ -45,8 +45,8 @@ void setup() {
 void loop() {
   temperature = bmp085GetTemperature(bmp085ReadUT());
   pressure = bmp085GetPressure(bmp085ReadUP());
-  altitude = (float)44330 * (1 - pow(((float) pressure/p0), 0.190295));
-
+  //altitude = (float)44330 * (1 - pow(((float) pressure/p0), 0.190295));
+  altitude = bmp085GetAltitude(temperature, pressure);
   int dsData[deviceCount];
   int t;
   //Serial.println("Incomming...");
