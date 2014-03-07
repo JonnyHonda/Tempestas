@@ -9,7 +9,7 @@ float quickMSLP(float t, float h, float p){
   float mslp = 0.0;
   float temp = pow (1 - (dTop / dBottom), -5.257);
   mslp =p * temp;
-return mslp;
+  return mslp;
 }
 
 void pipe2Pi(int ptrData[], float dht_temp, float humidity, long pressure, float altitude, short bmp085temperature){
