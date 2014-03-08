@@ -22,8 +22,7 @@ void pipe2Pi(int DS18_temperatureArray[], float DHT11_internalTemperature, float
     Serial.print ( (float) (DS18_temperatureArray[x] * 0.0078125) );
   }
 
-  float mslp = quickMSLP(DHT11_internalTemperature
-, 62.00, pressure);
+  float mslp = quickMSLP( (float) (DS18_temperatureArray[0] * 0.0078125), 62.00, pressure);
   Serial.print (",");
   Serial.print ((float) DHT11_internalTemperature
 );
