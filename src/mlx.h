@@ -1,12 +1,8 @@
 #include <lib/MLX90614/MLX90614.h>
-
+float getMlxTemp(void);
 MLX90614 mlx;
 
-float getMlxTemp(int t){
+float getMlxTemp(void){
   int address = 0x55;
-  if(t == 0) {
      return mlx.getObjTemp(address);
-   }else{
-  return mlx.getAmbTemp(address);
-   }
 }

@@ -51,8 +51,7 @@ void loop() {
   
   // fetch the mls Temps
   float objTemp = 0.0;
-  float ambTemp = 0.0;
-  // objTemp = getMlxTemp(0);
+  objTemp = getMlxTemp();
   // create an array to hold the ds18b20 temperatures
   int dsData[deviceCount];
   int t;
@@ -68,5 +67,5 @@ void loop() {
   float dht_temperature = readDHT_Temperature();
   
   // Now push everything to output
-  pipe2Pi(dsData, dht_temperature, humidity, pressure,altitude,temperature,ambTemp,objTemp);
+  pipe2Pi(dsData, dht_temperature, humidity, pressure,altitude,temperature,objTemp);
 }
