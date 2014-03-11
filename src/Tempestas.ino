@@ -52,7 +52,7 @@ void loop() {
   // fetch the mls Temps
   float objTemp = 0.0;
   float ambTemp = 0.0;
-  getMlxTemp(&objTemp, &ambTemp);
+  // objTemp = getMlxTemp(0);
   // create an array to hold the ds18b20 temperatures
   int dsData[deviceCount];
   int t;

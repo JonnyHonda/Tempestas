@@ -2,8 +2,11 @@
 
 MLX90614 mlx;
 
-void getMlxTemp(float *objTemp, float *ambTemp){
+float getMlxTemp(int t){
   int address = 0x55;
-  *objTemp = mlx.getObjTemp(address);
-  *ambTemp = mlx.getAmbTemp(address);
+  if(t == 0) {
+     return mlx.getObjTemp(address);
+   }else{
+  return mlx.getAmbTemp(address);
+   }
 }
