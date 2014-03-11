@@ -1,5 +1,6 @@
-void pipe2Pi(int DS18_temperatureArray[], float DHT11_internalTemperature, float humidity, long pressure, float altitude, short BMP085_internalTemperature);
+void pipe2Pi(int DS18_temperatureArray[], float DHT11_internalTemperature, float humidity, long pressure, float altitude, short BMP085_internalTemperature, float ambTemp, float objTemp);
 float quickMSLP(float, float, float);
+void getMlxTemp(float *, float *);
 
 int deviceCount; 
 
@@ -12,7 +13,7 @@ float quickMSLP(float t, float h, float p){
   return mslp;
 }
 
-void pipe2Pi(int DS18_temperatureArray[], float DHT11_internalTemperature, float humidity, long pressure, float altitude, short BMP085_internalTemperature){
+void pipe2Pi(int DS18_temperatureArray[], float DHT11_internalTemperature, float humidity, long pressure, float altitude, short BMP085_internalTemperature, float ambTemp,float objTemp){
   String output;
   double total;
   // Squirt all the data to the Pi
@@ -37,6 +38,10 @@ void pipe2Pi(int DS18_temperatureArray[], float DHT11_internalTemperature, float
   Serial.print ((short) BMP085_internalTemperature);
   Serial.print (",");
   Serial.print ((float) mslp);
+  Serial.print (",");
+  Serial.print ((float) ambTemp);
+  Serial.print (",");
+  Serial.print ((float) objTemp);
   Serial.println("\n");
   Serial.flush();
   delay(2000);

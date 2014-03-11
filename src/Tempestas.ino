@@ -10,18 +10,19 @@
 #include "custom_functions.h"
 #include "ds18b20_functions.h"
 
+#include "MLX90614.h"
+#include "mlx.h"
+//#include "lib/MLX90614/MLX90614.h"
 
 #define DHT_PIN 2
 
 #define TEMPERATURE_PRECISION 12
 #define MAX_DEVICES 5
 
-
-//OneWire oneWire(ONE_WIRE_BUS);
-// Pass our oneWire reference to Dallas Temperature.
-
 // An array of potentially 5 devices
 DeviceAddress device[MAX_DEVICES];
+
+//MLX90614 mlx;
 
 void setup() {
   // put your setup code here, to run once:
@@ -48,6 +49,10 @@ void loop() {
   pressure = bmp085GetPressure(bmp085ReadUP());
   altitude = bmp085GetAltitude(temperature, pressure);
   
+  // fetch the mls Temps
+  float objTemp = 0.0;
+  float ambTemp = 0.0;
+  getMlxTemp(&objTemp, &ambTemp);
   // create an array to hold the ds18b20 temperatures
   int dsData[deviceCount];
   int t;
@@ -63,5 +68,5 @@ void loop() {
   float dht_temperature = readDHT_Temperature();
   
   // Now push everything to output
-  pipe2Pi(dsData, dht_temperature, humidity, pressure,altitude,temperature);
+  pipe2Pi(dsData, dht_temperature, humidity, pressure,altitude,temperature,ambTemp,objTemp);
 }
